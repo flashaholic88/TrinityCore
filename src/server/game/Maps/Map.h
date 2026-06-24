@@ -626,6 +626,9 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         bool _areaTriggersToMoveLock;
         std::vector<AreaTrigger*> _areaTriggersToMove;
 
+        std::vector<Unit*> _unitsToVisit;
+        std::unordered_set<Unit*> _unitsToVisitSet;
+
         bool IsGridLoaded(GridCoord const&) const;
         void EnsureGridCreated(GridCoord const&);
         bool EnsureGridLoaded(Cell const&);
