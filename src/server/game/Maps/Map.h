@@ -617,6 +617,9 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         bool _creatureToMoveLock;
         std::vector<Creature*> _creaturesToMove;
 
+        std::vector<Unit*> _unitsToVisit;
+        std::unordered_set<Unit*> _unitsToVisitSet;
+
         bool _gameObjectsToMoveLock;
         std::vector<GameObject*> _gameObjectsToMove;
 
