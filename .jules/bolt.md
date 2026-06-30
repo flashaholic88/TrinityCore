@@ -1,0 +1,3 @@
+## 2026-06-28 - Reducing Heap Churn in Map::Update
+**Learning:** The `Map::Update` method is a major hot path called every tick for every player. It frequently created local `std::vector` and `std::unordered_set` for unit visitation (combat refs, aura casters, summons), causing measurable heap churn. In TrinityCore's `MapUpdater`, each `Map` is updated sequentially by a single thread, making it safe to use member variables as scratchpads without synchronization.
+**Action:** Move temporary visitation containers from local scope to `Map` member variables and use `.clear()` to reuse their capacity.
