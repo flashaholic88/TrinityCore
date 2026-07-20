@@ -626,6 +626,11 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         bool _areaTriggersToMoveLock;
         std::vector<AreaTrigger*> _areaTriggersToMove;
 
+        // Reusable scratchpads for performance optimization to avoid frequent heap allocations.
+        // Explicitly for temporary use in Map::Update; do not use as persistent state.
+        std::vector<Unit*> _unitsToVisit;
+        std::unordered_set<Unit*> _unitsToVisitSet;
+
         bool IsGridLoaded(GridCoord const&) const;
         void EnsureGridCreated(GridCoord const&);
         bool EnsureGridLoaded(Cell const&);
