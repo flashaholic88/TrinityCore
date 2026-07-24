@@ -1,0 +1,5 @@
+# Bolt's Journal ⚡
+
+## 2026-07-16 - Heap churn in Map::Update and Single-Threaded Scratchpads
+**Learning:** TrinityCore's game loop hot path executes `Map::Update` extremely frequently. Inside this method, loops over players allocate and deallocate temporary `std::vector` and `std::unordered_set` containers (e.g., `toVisit`) to collect entities near players for aura, combat, and summon updates. This introduces severe heap churn and dynamic memory overhead. Because each Map is updated sequentially by a single thread at a time, we can safely promote these temporary local containers to private member variables of the `Map` class. By calling `.clear()` on these member scratchpads instead of re-allocating them on every loop, we preserve their capacity and eliminate dynamic allocations entirely.
+**Action:** Always inspect critical game loop hot paths for local std::vector or std::unordered_set instances that are repeatedly instantiated. Promote them to class member scratchpads to reuse their capacity, adding comments to make sure they are immediately cleared after use to prevent stale/dangling pointers or misuse as persistent state.
